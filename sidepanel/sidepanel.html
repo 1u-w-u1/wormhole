@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wormhole Chat</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🌀</span>
+                    <span class="logo-text">Wormhole</span>
+                </div>
+                <button id="settingsBtn" class="icon-btn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div class="room-info">
+                <span class="room-label">Room:</span>
+                <span id="roomUrl" class="room-url">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Connection Status -->
+        <div id="statusBar" class="status-bar status-connecting">
+            <span class="status-dot"></span>
+            <span id="statusText">Connecting...</span>
+        </div>
+
+        <!-- User List -->
+        <div class="users-section">
+            <div class="section-header">
+                <span>Online</span>
+                <span id="userCount" class="user-count">0</span>
+            </div>
+            <div id="userList" class="user-list">
+                <!-- Users will be added here -->
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-section">
+            <div id="chatMessages" class="chat-messages">
+                <!-- Messages will be added here -->
+                <div class="empty-state" id="emptyState">
+                    <span class="empty-icon">💬</span>
+                    <p>No messages yet</p>
+                    <p class="empty-hint">Be the first to say hello!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input -->
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
+                <button id="sendBtn" class="send-btn" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error/Info Modal -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <div id="modalIcon" class="modal-icon">⚠️</div>
+            <h3 id="modalTitle">Error</h3>
+            <p id="modalMessage">Something went wrong</p>
+            <button id="modalBtn" class="modal-btn">OK</button>
+        </div>
+    </div>
+
+    <script src="sidepanel.js" type="module"></script>
+</body>
+
+</html>

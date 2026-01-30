@@ -1,0 +1,32 @@
+{
+  "name": "wormhole",
+  "version": "1.0.0",
+  "description": "A Chrome extension that enables WebRTC-based text chat between users visiting the same webpage. Connect with others on any site through a sleek side panel interface.",
+  "main": "content-script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1u-w-u1/wormhole.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/1u-w-u1/wormhole/issues"
+  },
+  "homepage": "https://github.com/1u-w-u1/wormhole#readme",
+  "dependencies": {
+    "firebase": "^12.8.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.2"
+  }
+}
