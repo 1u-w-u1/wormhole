@@ -11,7 +11,6 @@ const elements = {
     odId: document.getElementById('userId'),
     copyIdBtn: document.getElementById('copyIdBtn'),
     saveBtn: document.getElementById('saveBtn'),
-    resetBtn: document.getElementById('resetBtn'),
     toast: document.getElementById('toast'),
     toastMessage: document.getElementById('toastMessage')
 };
@@ -52,19 +51,6 @@ function setupEventListeners() {
     // Save button
     elements.saveBtn.addEventListener('click', saveSettings);
 
-    // Reset button (generate new ID)
-    elements.resetBtn.addEventListener('click', async () => {
-        if (confirm('This will generate a new user ID. Other users will see you as a new person. Continue?')) {
-            const newUser = {
-                odId: generateUserId(),
-                nickname: elements.nickname.value || generateNickname(),
-                email: elements.email.value
-            };
-            await chrome.storage.sync.set(newUser);
-            elements.odId.textContent = newUser.odId;
-            showToast('New ID generated!');
-        }
-    });
 
     // Copy ID button
     elements.copyIdBtn.addEventListener('click', async () => {
