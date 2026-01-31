@@ -45,7 +45,10 @@ async function run() {
 
             if (fs.existsSync(src)) {
                 if (fs.lstatSync(src).isDirectory()) {
-                    fs.cpSync(src, dest, { recursive: true });
+                    fs.cpSync(src, dest, {
+                        recursive: true,
+                        filter: (srcPath) => !srcPath.endsWith('.js.map')
+                    });
                 } else {
                     fs.copyFileSync(src, dest);
                 }
