@@ -82,7 +82,7 @@ The project uses **esbuild** to bundle the source files.
 ### Key Logic Files
 - `src/offscreen.js`: The most complex file, managing the PeerConnection state machine and Firebase signaling.
 - `lib/utils.js`: Shared utilities for URL normalization and ID generation.
-- `lib/webrtc-manager.js`: A modular class-based version of the connection logic (used as a reference).
+- `lib/i18n.js`: Multi-language support and translation keys.
 
 ## Security Note
 

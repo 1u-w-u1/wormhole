@@ -17,15 +17,29 @@
      */
     function isContextValid() {
         if (isInvalidated) return false;
-        if (!chrome.runtime?.id) {
-            if (!isInvalidated) {
-                console.log('[Wormhole] Extension context invalidated, stopping script.');
-                isInvalidated = true;
-                if (urlCheckInterval) clearInterval(urlCheckInterval);
+
+        try {
+            // Accessing chrome.runtime.id will throw if context is invalidated
+            if (!chrome.runtime?.id) {
+                invalidate();
+                return false;
             }
+            return true;
+        } catch (e) {
+            invalidate();
             return false;
         }
-        return true;
+    }
+
+    function invalidate() {
+        if (!isInvalidated) {
+            console.log('[Wormhole] Extension context invalidated, stopping script.');
+            isInvalidated = true;
+            if (urlCheckInterval) {
+                clearInterval(urlCheckInterval);
+                urlCheckInterval = null;
+            }
+        }
     }
 
     /**
