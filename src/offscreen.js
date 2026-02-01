@@ -118,7 +118,7 @@ async function joinRoom(roomId, user) {
         onDisconnect(userRef).remove();
 
         // Listen for other users
-        listenForUsers(roomId);
+        usersUnsubscribe = listenForUsers(roomId);
 
         // Listen for signaling messages
         listenForSignals(roomId);
@@ -202,18 +202,16 @@ function listenForUsers(roomId) {
     const usersRef = ref(db, `rooms/${roomId}/users`);
 
     // Handle user join
-    const onJoin = onChildAdded(usersRef, (snapshot) => {
+    const unsubJoin = onChildAdded(usersRef, (snapshot) => {
         const userData = snapshot.val();
         const odId = snapshot.key;
 
         // Skip self
-        if (odId === currentUser.odId) return;
+        if (odId === currentUser?.odId) return;
 
         console.log(`[Offscreen] User joined: ${userData.nickname}`);
-
         roomUsers.set(odId, userData);
 
-        // Notify service worker
         sendToServiceWorker({
             type: 'USER_JOINED',
             user: { odId, ...userData }
@@ -224,10 +222,10 @@ function listenForUsers(roomId) {
     });
 
     // Handle user leave
-    const onLeave = onChildRemoved(usersRef, (snapshot) => {
+    const unsubLeave = onChildRemoved(usersRef, (snapshot) => {
         const odId = snapshot.key;
 
-        // Skip self (though we shouldn't get this if we unsub correctly)
+        // Skip self
         if (odId === currentUser?.odId) return;
 
         const userData = roomUsers.get(odId);
@@ -243,12 +241,12 @@ function listenForUsers(roomId) {
     });
 
     // Handle user data change (e.g. nickname)
-    const onChange = onChildChanged(usersRef, (snapshot) => {
+    const unsubChange = onChildChanged(usersRef, (snapshot) => {
         const userData = snapshot.val();
         const odId = snapshot.key;
 
         // Skip self
-        if (odId === currentUser.odId) return;
+        if (odId === currentUser?.odId) return;
 
         console.log(`[Offscreen] User updated: ${userData.nickname}`);
         roomUsers.set(odId, userData);
@@ -260,17 +258,18 @@ function listenForUsers(roomId) {
         });
     });
 
-    usersUnsubscribe = () => {
-        off(usersRef, 'child_added', onJoin);
-        off(usersRef, 'child_removed', onLeave);
-        off(usersRef, 'child_changed', onChange);
+    // Return combined unsubscribe function
+    return () => {
+        unsubJoin();
+        unsubLeave();
+        unsubChange();
     };
 }
 
 function listenForSignals(roomId) {
     const signalsRef = ref(db, `rooms/${roomId}/signals`);
 
-    const onSignal = onChildAdded(signalsRef, async (snapshot) => {
+    signalUnsubscribe = onChildAdded(signalsRef, async (snapshot) => {
         const signal = snapshot.val();
         const signalId = snapshot.key;
 
@@ -299,10 +298,6 @@ function listenForSignals(roomId) {
         // Clean up processed signal
         remove(ref(db, `rooms/${roomId}/signals/${signalId}`));
     });
-
-    signalUnsubscribe = () => {
-        off(signalsRef, 'child_added', onSignal);
-    };
 }
 
 async function sendSignal(toUserId, type, data) {

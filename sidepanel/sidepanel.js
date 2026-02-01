@@ -196,6 +196,13 @@ function setupMessageListener() {
 function handleRoomJoined(data) {
     console.log('[SidePanel] Joined room:', data.roomId);
 
+    // Clear state from previous room
+    users.clear();
+    messages = [];
+    seenMessageIds.clear();
+    renderUserList();
+    renderMessages();
+
     // Update room URL
     elements.roomUrl.textContent = getDisplayUrl(roomIdToUrl(data.roomId));
     updateConnectionStatus(true);

@@ -351,6 +351,13 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     }
 });
 
+chrome.tabs.onRemoved.addListener(async (tabId) => {
+    if (tabId === currentTabId) {
+        console.log('[SW] Current tab closed, leaving room');
+        await leaveCurrentRoom();
+    }
+});
+
 // ============================================================================
 // Lifecycle
 // ============================================================================
